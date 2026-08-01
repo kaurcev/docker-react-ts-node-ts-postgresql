@@ -42,7 +42,6 @@ export const router = createBrowserRouter([
     ],
   },
   {
-    path: '*',
     element: <EmptyLayout />,
     children: [
       { path: '*', element: withSuspense(NotFoundPage) }
