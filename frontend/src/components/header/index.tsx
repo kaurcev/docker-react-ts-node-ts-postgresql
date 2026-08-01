@@ -5,7 +5,7 @@ import s from './index.module.css';
 export const Header = () => {
   const { user, logout } = useAuth();
   return (
-    <header className={s.header}>
+    <header className={s.root}>
       <span>шапка сайта</span>
       <nav>
         <Link to="/">Главная</Link>
