@@ -5,7 +5,7 @@ import { sendError } from '../utils/response';
 export const authMiddleware = (req: Request, res: Response, next: NextFunction): void => {
   const authHeader = req.headers.authorization;
   if (!authHeader || !authHeader.startsWith('Bearer ')) {
-    sendError(res, 'No token provided', null, 401);
+    sendError(res, 'Токен не предоставлен', null, 401);
     return;
   }
   const token = authHeader.split(' ')[1];
@@ -14,6 +14,6 @@ export const authMiddleware = (req: Request, res: Response, next: NextFunction):
     (req as any).user = decoded;
     next();
   } catch (error) {
-    sendError(res, 'Invalid token', null, 401);
+    sendError(res, 'Неверный токен', null, 401);
   }
 };

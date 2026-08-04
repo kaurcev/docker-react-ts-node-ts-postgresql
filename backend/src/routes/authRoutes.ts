@@ -7,6 +7,7 @@ import { rbacMiddleware } from '../middlewares/rbac';
 import { validate } from '../middlewares/validate';
 import { registerSchema, loginSchema, updateRoleSchema } from '../validators/authValidator';
 import { sendSuccess, sendError } from '../utils/response';
+import { AppError } from '../utils/customError';
 
 const router = Router();
 
@@ -27,8 +28,13 @@ router.put(
     try {
       const { id } = req.params;
       const { role } = req.body;
+      const user = await userRepository.findById(Number(id));
+      if (!user) {
+        throw new AppError('Пользователь не найден', 404);
+      }
+
       await userRepository.updateRole(Number(id), role);
-      sendSuccess(res, 'Role updated successfully', { id, role });
+      sendSuccess(res, 'Роль успешно обновлена', { id, role });
     } catch (error) {
       next(error);
     }

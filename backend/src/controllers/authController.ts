@@ -9,7 +9,7 @@ export class AuthController {
     try {
       const { email, password, role } = req.body;
       const user = await this.authService.register(email, password, role);
-      sendSuccess(res, 'User registered successfully', user, 201);
+      sendSuccess(res, 'Пользователь успешно зарегистрирован', user, 201);
     } catch (error: any) {
       next(error);
     }
@@ -19,7 +19,7 @@ export class AuthController {
     try {
       const { email, password } = req.body;
       const result = await this.authService.login(email, password);
-      sendSuccess(res, 'Login successful', result);
+      sendSuccess(res, 'Вход выполнен успешно', result);
     } catch (error: any) {
       next(error);
     }
@@ -29,15 +29,15 @@ export class AuthController {
     try {
       const userId = (req as any).user?.id;
       if (!userId) {
-        sendError(res, 'Unauthorized', null, 401);
+        sendError(res, 'Не авторизован', null, 401);
         return;
       }
       const user = await this.authService.getUserById(userId);
       if (!user) {
-        sendError(res, 'User not found', null, 404);
+        sendError(res, 'Пользователь не найден', null, 404);
         return;
       }
-      sendSuccess(res, 'Profile fetched', user);
+      sendSuccess(res, 'Профиль получен', user);
     } catch (error: any) {
       next(error);
     }

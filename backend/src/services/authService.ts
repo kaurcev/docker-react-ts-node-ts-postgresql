@@ -2,6 +2,7 @@ import bcrypt from 'bcrypt';
 import { UserRepository, IUserRepository } from '../repositories/userRepository';
 import { generateToken } from '../utils/jwt';
 import { User } from '../models/user';
+import { AppError } from '../utils/customError';
 
 export class AuthService {
   constructor(private userRepository: IUserRepository) {}
@@ -9,7 +10,7 @@ export class AuthService {
   async register(email: string, password: string, role?: string): Promise<Omit<User, 'password_hash'>> {
     const existing = await this.userRepository.findByEmail(email);
     if (existing) {
-      throw new Error('User already exists');
+      throw new AppError('Пользователь уже существует', 409);
     }
 
     const hashed = await bcrypt.hash(password, 10);
@@ -21,12 +22,12 @@ export class AuthService {
   async login(email: string, password: string): Promise<{ token: string; user: Omit<User, 'password_hash'> }> {
     const user = await this.userRepository.findByEmail(email);
     if (!user) {
-      throw new Error('Invalid credentials');
+      throw new AppError('Неверные учетные данные', 401);
     }
 
     const valid = await bcrypt.compare(password, user.password_hash);
     if (!valid) {
-      throw new Error('Invalid credentials');
+      throw new AppError('Неверные учетные данные', 401);
     }
 
     const token = generateToken({ id: user.id, email: user.email, role: user.role });

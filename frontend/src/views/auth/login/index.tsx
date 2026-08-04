@@ -1,46 +1,54 @@
-import { useState, FormEvent } from 'react';
+import { useActionState } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
 import { useAuth } from 'contexts/auth';
 import s from './index.module.css';
 
 export default function Login() {
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
-  const [error, setError] = useState('');
   const { login } = useAuth();
   const navigate = useNavigate();
 
-  const handleSubmit = async (e: FormEvent) => {
-    e.preventDefault();
-    setError('');
-    try {
-      await login(email, password);
-      navigate('/');
-    } catch (err: any) {
-      setError(err.message || 'Ошибка входа');
-    }
-  };
+  const [error, formAction, isPending] = useActionState(
+    async (_prevState: string | null, formData: FormData) => {
+      const email = formData.get('email') as string;
+      const password = formData.get('password') as string;
+
+      try {
+        await login(email, password);
+        navigate('/');
+        return null;
+      } catch (err: any) {
+        return err.message || 'Ошибка входа';
+      }
+    },
+    null
+  );
 
   return (
     <section className={s.root}>
       <h2>Вход</h2>
-      <form onSubmit={handleSubmit} className={s.form}>
+      <form action={formAction} className={s.form}>
         <input
+          name="email"
           type="email"
           placeholder="Email"
-          value={email}
-          onChange={(e) => setEmail(e.target.value)}
+          autoComplete="username"
           required
+          disabled={isPending}
         />
         <input
+          name="password"
           type="password"
           placeholder="Пароль"
-          value={password}
-          onChange={(e) => setPassword(e.target.value)}
+          autoComplete="current-password"
           required
+          disabled={isPending}
         />
+        
         {error && <div className={s.error}>{error}</div>}
-        <button type="submit">Войти</button>
+        
+        <button type="submit" disabled={isPending}>
+          {isPending ? 'Вход...' : 'Войти'}
+        </button>
       </form>
       <p>
         Нет аккаунта? <Link to="/auth/register">Зарегистрироваться</Link>
