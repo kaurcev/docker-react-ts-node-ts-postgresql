@@ -1,12 +1,13 @@
-FROM node:18-alpine
+FROM node:20-alpine
 
 WORKDIR /app
 
 COPY package*.json ./
-RUN npm install
+
+RUN npm ci --legacy-peer-deps
 
 COPY . .
 
-EXPOSE 3000
+EXPOSE 5173
 
-CMD ["npm", "start"]
+CMD ["npm", "run", "dev"]
