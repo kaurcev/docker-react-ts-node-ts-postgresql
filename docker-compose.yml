@@ -4,26 +4,18 @@ services:
       context: ./backend
       dockerfile: Dockerfile
     container_name: backend
-    command: npm run dev
-    ports:
-      - "3001:3001"
     environment:
-      - NODE_ENV=development
       - PORT=3001
       - DB_HOST=db
       - DB_PORT=5432
       - DB_USER=user
       - DB_PASSWORD=password
       - DB_NAME=mydb
-      - JWT_SECRET=your_very_secret_key_here
     depends_on:
       db:
         condition: service_healthy
     networks:
       - app-network
-    volumes:
-      - ./backend:/app
-      - /app/node_modules
     restart: on-failure
 
   frontend:
@@ -31,18 +23,10 @@ services:
       context: ./frontend
       dockerfile: Dockerfile
     container_name: frontend
-    ports:
-      - "5173:5173"
-    environment:
-      - VITE_API_URL=http://localhost:3001
     depends_on:
       - backend
     networks:
       - app-network
-    volumes:
-      - ./frontend:/app
-      - /app/node_modules
-    stdin_open: true
 
   db:
     image: postgres:14-alpine
@@ -51,8 +35,6 @@ services:
       POSTGRES_USER: user
       POSTGRES_PASSWORD: password
       POSTGRES_DB: mydb
-    ports:
-      - "127.0.0.1:5432:5432"
     networks:
       - app-network
     volumes:

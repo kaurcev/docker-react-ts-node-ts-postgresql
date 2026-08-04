@@ -1,8 +1,9 @@
-import express, { Request, Response } from 'express';
+import express from 'express';
+import type { Request, Response } from 'express';
 import cors from 'cors';
 import morgan from 'morgan';
-import authRoutes from './routes/authRoutes';
-import { errorHandler } from './utils/errorHandler';
+import authRoutes from './routes/authRoutes.js';
+import { errorHandler } from './utils/errorHandler.js';
 
 const app = express();
 
@@ -17,7 +18,7 @@ app.use(express.json());
 
 app.use('/auth', authRoutes);
 
-app.get('/health', (req: Request, res: Response) => {
+app.get('/health', (_req: Request, res: Response) => {
   res.json({ status: 'OK' });
 });
 

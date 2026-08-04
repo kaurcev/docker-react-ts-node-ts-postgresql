@@ -1,6 +1,6 @@
-import { Request, Response, NextFunction } from 'express';
-import { verifyToken } from '../utils/jwt';
-import { sendError } from '../utils/response';
+import type { Request, Response, NextFunction } from 'express';
+import { verifyToken } from '../utils/jwt.js';
+import { sendError } from '../utils/response.js';
 
 export const authMiddleware = (req: Request, res: Response, next: NextFunction): void => {
   const authHeader = req.headers.authorization;
@@ -13,7 +13,7 @@ export const authMiddleware = (req: Request, res: Response, next: NextFunction):
     const decoded = verifyToken(token);
     (req as any).user = decoded;
     next();
-  } catch (error) {
+  } catch (_error) {
     sendError(res, 'Неверный токен', null, 401);
   }
 };

@@ -1,0 +1,25 @@
+services:
+  backend:
+    build:
+      target: production
+    ports:
+      - "3001:3001"
+    environment:
+      - NODE_ENV=production
+      - PORT=3001
+      - DB_HOST=db
+      - DB_PORT=5432
+      - DB_USER=user
+      - DB_PASSWORD=password
+      - DB_NAME=mydb
+      - JWT_SECRET=super_mega_secure_production_secret_key
+    restart: always
+
+  frontend:
+    build:
+      target: production
+      args:
+        - VITE_API_URL=http://localhost:3001
+    ports:
+      - "80:8080"
+    restart: always

@@ -1,11 +1,15 @@
+import type { IUserRepository } from '../repositories/userRepository';
+import { generateToken } from '../utils/jwt.js';
+import type { User } from '../models/user.js';
+import { AppError } from '../utils/customError.js';
 import bcrypt from 'bcrypt';
-import { UserRepository, IUserRepository } from '../repositories/userRepository';
-import { generateToken } from '../utils/jwt';
-import { User } from '../models/user';
-import { AppError } from '../utils/customError';
 
 export class AuthService {
-  constructor(private userRepository: IUserRepository) {}
+  private userRepository: IUserRepository;
+
+  constructor(userRepository: IUserRepository) {
+    this.userRepository = userRepository;
+  }
 
   async register(email: string, password: string, role?: string): Promise<Omit<User, 'password_hash'>> {
     const existing = await this.userRepository.findByEmail(email);

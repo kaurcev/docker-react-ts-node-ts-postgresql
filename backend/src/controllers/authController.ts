@@ -1,9 +1,13 @@
-import { Request, Response, NextFunction } from 'express';
-import { AuthService } from '../services/authService';
-import { sendSuccess, sendError } from '../utils/response';
+import type { Request, Response, NextFunction } from 'express';
+import { AuthService } from '../services/authService.js';
+import { sendSuccess, sendError } from '../utils/response.js';
 
 export class AuthController {
-  constructor(private authService: AuthService) {}
+  private authService: AuthService;
+
+  constructor(authService: AuthService) {
+    this.authService = authService;
+  }
 
   register = async (req: Request, res: Response, next: NextFunction): Promise<void> => {
     try {

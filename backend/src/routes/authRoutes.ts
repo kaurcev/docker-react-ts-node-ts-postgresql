@@ -1,13 +1,13 @@
 import { Router } from 'express';
-import { AuthController } from '../controllers/authController';
-import { AuthService } from '../services/authService';
-import { UserRepository } from '../repositories/userRepository';
-import { authMiddleware } from '../middlewares/auth';
-import { rbacMiddleware } from '../middlewares/rbac';
-import { validate } from '../middlewares/validate';
-import { registerSchema, loginSchema, updateRoleSchema } from '../validators/authValidator';
-import { sendSuccess, sendError } from '../utils/response';
-import { AppError } from '../utils/customError';
+import { AuthController } from '../controllers/authController.js';
+import { AuthService } from '../services/authService.js';
+import { UserRepository } from '../repositories/userRepository.js';
+import { authMiddleware } from '../middlewares/auth.js';
+import { rbacMiddleware } from '../middlewares/rbac.js';
+import { validate } from '../middlewares/validate.js';
+import { registerSchema, loginSchema, updateRoleSchema } from '../validators/authValidator.js';
+import { sendSuccess } from '../utils/response.js';
+import { AppError } from '../utils/customError.js';
 
 const router = Router();
 

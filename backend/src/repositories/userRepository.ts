@@ -1,6 +1,6 @@
-import { QueryResult } from 'pg';
-import { pool } from '../config/database';
-import { User } from '../models/user';
+import type { QueryResult } from 'pg';
+import { pool } from '../config/database.js';
+import type { User } from '../models/user.js';
 
 export interface IUserRepository {
   create(email: string, passwordHash: string, role: string): Promise<User>;
