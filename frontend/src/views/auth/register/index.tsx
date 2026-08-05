@@ -1,11 +1,13 @@
 import { useActionState } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
 import { useAuth } from 'contexts/auth';
+import { usePageTitle } from 'contexts/page';
 import s from './index.module.css';
 
 export default function Register() {
   const { register } = useAuth();
   const navigate = useNavigate();
+  usePageTitle('Регистрация');
 
   const [error, formAction, isPending] = useActionState(
     async (_prevState: string | null, formData: FormData) => {
